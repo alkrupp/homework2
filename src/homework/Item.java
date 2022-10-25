@@ -18,23 +18,17 @@ public class Item {
     private static int counter = 1;
 
     private final int id;
-
-    private String name;
-
+    private final ItemType type;
     private double price;
 
-    public Item(String name, double price) {
+    public Item(ItemType type, double price) {
         id = counter++;
-        this.name = name;
+        this.type = type;
         this.price = price;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public ItemType getType() {
+        return type;
     }
 
     public double getPrice() {
@@ -50,19 +44,18 @@ public class Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return Double.compare(item.price, price) == 0;
+        return id == item.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(price);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                " name='" + type + '\'' +
                 ", price=" + price +
                 '}';
     }

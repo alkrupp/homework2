@@ -1,9 +1,6 @@
 package homework;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 // class Order
 // поля
 // поле UUID orderUuid
@@ -15,30 +12,65 @@ import java.util.UUID;
 // методы
 // getter/setter/equals/hashcode/toString
 public class Order {
-    private UUID orderUuid = UUID.randomUUID();
+    // зделать без конструктара посматреть
+    private static int counter = 1;
 
-    public Map<Item, Integer> MAP = new HashMap<>();
+    private final int id;
+    //private final UUID orderUuid;
+    private final List<Item> items;
 
-    public Order(UUID orderUuid, Map<Item, Integer> MAP) {
-        this.orderUuid = orderUuid;
-        this.MAP = MAP;
+    public Order() {
+        id = counter++;
+        //orderUuid = UUID.randomUUID();
+        items = new ArrayList<>();
     }
 
-
-    public UUID getOrderUuid() {
-        return orderUuid;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setOrderUuid(UUID orderUuid) {
-        this.orderUuid = orderUuid;
+//    public void addItem(Item item) {
+//        Integer currentItemsCount = items.get(item);
+//        if (currentItemsCount == null) {
+//            items.put(item, 1);
+//        } else {
+//            items.put(item, currentItemsCount + 1);
+//        }
+//        //map.put(item, map.get(item) + 1); // get он по имени ключа берёт значени ключа
+//    }
+
+//    public void addItem(ItemType type, double price, int amount) {
+//        for (int i = 0; i < amount; i++) {
+//            addItem(new Item(type, price));
+//        }
+//    }
+
+//    public boolean removeItem(Item item) {
+//        if (items.containsKey(item)) {
+//            items.remove(item);
+//            return true;
+//        }
+//        return false;
+//    }
+
+    public void addItem(Item item) {
+        items.add(item);
     }
 
-    public Map<Item, Integer> getMAP() {
-        return MAP;
+//    public void addItem(ItemType type, double price, int amount) {
+//        for (int i = 0; i < amount; i++) {
+//            items.add(new Item(type, price));
+//        }
+//    }
+
+    public double getTotal(){
+        return items.stream()
+                .map(Item::getPrice)
+                .reduce(0D,(Double x, Double y)->x+y);
     }
 
-    public void setMAP(Map<Item, Integer> MAP) {
-        this.MAP = MAP;
+    public void addItems(List<Item> itemList) {
+        items.addAll(itemList);
     }
 
     @Override
@@ -46,19 +78,19 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return orderUuid.equals(order.orderUuid) && MAP.equals(order.MAP);
+        return id == order.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderUuid, MAP);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         return "Order{" +
-                "orderUuid=" + orderUuid +
-                ", MAP=" + MAP +
+                "id=" + id +
+                ", items=" + items +
                 '}';
     }
 }
